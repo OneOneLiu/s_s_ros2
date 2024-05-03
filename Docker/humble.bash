@@ -5,7 +5,7 @@ docker run --rm -it \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --env="XAUTHORITY=$XAUTH" \
-    --volume="/home/$USER/catkin_ws/src/s_s_ros2/src:/ros2_ws/src" \
+    --volume="/home/$USER/catkin_ws/src/s_s_ros2/src:/catkin_ws/src" \
     --volume="/dev/bus/usb:/dev/bus/usb" \
     --volume="/tmp/.docker.xauth:/tmp/.docker.xauth:rw" \
     --net=host \
