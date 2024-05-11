@@ -19,4 +19,11 @@ RUN apt-get update && \
 RUN apt install -y ros-$ROS_DISTRO-librealsense2* && \
     apt install -y ros-$ROS_DISTRO-realsense2-*
 
+RUN mkdir /catkin_ws && \
+    cd /catkin_ws/ && \
+    colcon build
+
+# Automatically source
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
 RUN echo "ALL Done"
