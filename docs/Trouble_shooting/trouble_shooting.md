@@ -41,5 +41,58 @@ Unsolved: try to install the release version
 与这个描述的一致, 必须得打开某个已经source的package里面的urdf文件才行,否则就会卡死. 
 
 3. ros2 control failed loading after adding gripper
+
+```bash{.line-numbers}
+[move_group-3] You can start planning now!
+[move_group-3] 
+[ERROR] [ros2_control_node-5]: process has died [pid 49738, exit code -6, cmd '/opt/ros/humble/lib/controller_manager/ros2_control_node --ros-args --params-file /tmp/launch_params_u12ksnak --params-file /catkin_ws/install/robotiq_moveit_config_test/share/robotiq_moveit_config_test/config/ros2_controllers.yaml'].
+```
+
+```bash{.line-numbers}
+[gripper_controller]: 'joints' parameter is empty.
+```
+
+这个是`moveit2`的`bug`导致的, `robotiq`只有一个关节,所以生成`ros2_controller.yaml`的时候时它写成了joint, 但是应该写成joints.
+
+生成的版本:
+
+```yaml{.line-numbers}
+gripper_controller:
+  ros__parameters:
+    joint: robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+```
+
+正确的版本:
+```yaml{.line-numbers}
+gripper_controller:
+  ros__parameters:
+    joints:
+      - robotiq_85_left_knuckle_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+```
+
+另外现在不能像ROS1那样把所有的关节都添加到joint group里面用来预览,不知道后面会不会修复.
+
+- https://robotics.stackexchange.com/questions/111086/ros2-controllers-activation-issues
+
 - https://answers.ros.org/question/418186/ros2_control_node-dies-after-launch/
 - https://answers.ros.org/question/416055/unable-to-execute-motion-plan-in-moveit-2-and-ros2-controller-manager-keeps-dying/
+
+
+其他两个不影响的问题:
+
+```
+[moveit_ros_visualization.motion_planning_frame]: Action server: /recognize_objects not available
+```
+下面这个应该是rviz的问题: https://github.com/ros2/rviz/issues/872, 在我这里应该是夹爪里的某个关节, 单独用机器人没这个错误.
+```
+[rviz2-4] [ERROR] [1724000877.116674969] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.```
