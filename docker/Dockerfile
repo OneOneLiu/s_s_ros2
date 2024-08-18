@@ -26,7 +26,9 @@ RUN mkdir -p /catkin_ws/src && \
     apt install -y ros-humble-moveit ros-humble-moveit-setup-assistant && \
     apt install -y ros-humble-ros2-control && \
     apt install -y ros-humble-ament-cmake && \
-    apt install -y ros-humble-gazebo-ros-pkgs
+    apt install -y ros-humble-gazebo-ros-pkgs && \
+    apt-get install ros-humble-ur && \
+    apt-get install ros-humble-ur-bringup && \
 
 RUN cd /catkin_ws/ && \
     rosdep update && \

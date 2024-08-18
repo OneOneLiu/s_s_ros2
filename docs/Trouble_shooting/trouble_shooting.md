@@ -39,3 +39,7 @@ Unsolved: try to install the release version
 
 2. moveit2 setup assistant 卡死
 与这个描述的一致, 必须得打开某个已经source的package里面的urdf文件才行,否则就会卡死. 
+
+3. ros2 control failed loading after adding gripper
+- https://answers.ros.org/question/418186/ros2_control_node-dies-after-launch/
+- https://answers.ros.org/question/416055/unable-to-execute-motion-plan-in-moveit-2-and-ros2-controller-manager-keeps-dying/
