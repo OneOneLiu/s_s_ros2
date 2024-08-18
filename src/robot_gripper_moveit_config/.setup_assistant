@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ur5_robot_gripper
+    relative_path: urdf/ur5_robotiq_description.xacro
+  srdf:
+    relative_path: config/ur5_with_robotiq_2f_85.srdf
+  package_settings:
+    author_name: daohui
+    author_email: daohuiliu@qq.com
+    generated_timestamp: 1723953921

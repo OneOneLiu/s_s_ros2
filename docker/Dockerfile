@@ -19,11 +19,22 @@ RUN apt-get update && \
 RUN apt install -y ros-$ROS_DISTRO-librealsense2* && \
     apt install -y ros-$ROS_DISTRO-realsense2-*
 
-RUN mkdir /catkin_ws && \
-    cd /catkin_ws/ && \
-    colcon build
+# Install UR5 robot
+RUN mkdir -p /catkin_ws/src && \
+    cd /catkin_ws/src && \
+    git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git && \
+    apt install -y ros-humble-moveit ros-humble-moveit-setup-assistant && \
+    apt install -y ros-humble-ros2-control && \
+    apt install -y ros-humble-ament-cmake && \
+    apt install -y ros-humble-gazebo-ros-pkgs
+
+RUN cd /catkin_ws/ && \
+    rosdep update && \
+    rosdep install --from-paths src --ignore-src -r -y
+    # colcon build
 
 # Automatically source
-RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
+    echo "source /catkin_ws/install/setup.bash" >> ~/.bashrc
 
 RUN echo "ALL Done"
