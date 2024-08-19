@@ -19,10 +19,24 @@ RUN apt-get update && \
 RUN apt install -y ros-$ROS_DISTRO-librealsense2* && \
     apt install -y ros-$ROS_DISTRO-realsense2-*
 
-# Install UR5 robot
-RUN mkdir -p /catkin_ws/src && \
+# Build moveit2 from source 
+# 1. https://moveit.picknik.ai/main/doc/tutorials/getting_started/getting_started.html
+# 2. https://www.youtube.com/watch?v=c6Bxbq8UdaI
+# Note: Pre compile here because it takes a long time (~18 minutes) to compile
+RUN rosdep update && \
+    apt update && \
+    apt -y dist-upgrade && \
+    apt install python3-vcstool && \
+    mkdir -p /catkin_ws/src && \
     cd /catkin_ws/src && \
-    apt install -y ros-${ROS_DISTRO}-moveit ros-${ROS_DISTRO}-moveit-setup-assistant && \
+    git clone --branch humble https://github.com/moveit/moveit2_tutorials && \
+    vcs import < moveit2_tutorials/moveit2_tutorials.repos && \
+    rosdep update && \
+    apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y && \
+    /bin/bash -c ". /opt/ros/humble/setup.bash; cd /catkin_ws; colcon build --mixin release --executor sequential"
+
+# Install UR5 robot
+RUN cd /catkin_ws/src && \
     apt install -y ros-${ROS_DISTRO}-ros2-control && \
     apt install -y ros-${ROS_DISTRO}-ament-cmake && \
     apt install -y ros-${ROS_DISTRO}-gazebo-ros-pkgs && \
@@ -31,13 +45,9 @@ RUN mkdir -p /catkin_ws/src && \
 
 RUN cd /catkin_ws/ && \
     rosdep update && \
-    rosdep install --from-paths src --ignore-src -r -y && \
-    colcon build --symlink-install
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["bash"]
+    /bin/bash -c ". /opt/ros/humble/setup.bash;. /catkin_ws/install/setup.bash" && \
+    apt update && rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
+    # /bin/bash -c ". /opt/ros/humble/setup.bash; colcon build --packages-ignore moveit*"
 
 # Automatically source
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \

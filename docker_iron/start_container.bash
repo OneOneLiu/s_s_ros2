@@ -1,7 +1,7 @@
 xhost local:root
 XAUTH=/tmp/.docker.xauth
 docker run --rm -it \
-    --name=ros_humble_container \
+    --name=ros_iron_container \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --env="XAUTHORITY=$XAUTH" \
@@ -10,7 +10,7 @@ docker run --rm -it \
     --volume="/tmp/.docker.xauth:/tmp/.docker.xauth:rw" \
     --net=host \
     --privileged \
-    ros_rolling_image \
+    ros_iron_image \
     bash
 
 echo "Done."

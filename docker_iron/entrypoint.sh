@@ -2,7 +2,7 @@
 # entrypoint.sh
 
 # 移动到工作空间文件夹
-source /opt/ros/rolling/setup.bash
+source /opt/ros/iron/setup.bash
 cd /catkin_ws
 colcon build --symlink-install
 source /catkin_ws/install/setup.bash
