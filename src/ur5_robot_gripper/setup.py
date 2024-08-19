@@ -33,6 +33,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'sim_control = ur5_robot_gripper.robotiq.sim_control:main',
         ],
     },
 )

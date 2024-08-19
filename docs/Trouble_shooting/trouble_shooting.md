@@ -79,8 +79,9 @@ gripper_controller:
       - position
       - velocity
 ```
+> This has been fixed in the source install version
 
-另外现在不能像ROS1那样把所有的关节都添加到joint group里面用来预览,不知道后面会不会修复.
+4. 另外现在不能像ROS1那样把所有的关节都添加到joint group里面用来预览,不知道后面会不会修复.
 
 - https://robotics.stackexchange.com/questions/111086/ros2-controllers-activation-issues
 
@@ -88,11 +89,39 @@ gripper_controller:
 - https://answers.ros.org/question/416055/unable-to-execute-motion-plan-in-moveit-2-and-ros2-controller-manager-keeps-dying/
 
 
-其他两个不影响的问题:
+5. 其他两个不影响的问题:
 
 ```
 [moveit_ros_visualization.motion_planning_frame]: Action server: /recognize_objects not available
 ```
 下面这个应该是rviz的问题: https://github.com/ros2/rviz/issues/872, 在我这里应该是夹爪里的某个关节, 单独用机器人没这个错误.
 ```
-[rviz2-4] [ERROR] [1724000877.116674969] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.```
+[rviz2-4] [ERROR] [1724000877.116674969] [rviz2]: The link is static or has unrealistic inertia, so the equivalent inertia box will not be shown.
+```
+
+6. moveit 没有humble的python binding???
+https://github.com/moveit/moveit2_tutorials/issues/891
+https://github.com/moveit/moveit2/issues/2657#issuecomment-1912175452 从源码编译可以?
+https://blog.csdn.net/raw_inputhello/article/details/136443432 这人也说从源码编译可以
+
+根据这个youtube链接的安装就可以了, 其实就是follow下面的教程, 然后clone了humble的branch
+- 1. https://moveit.picknik.ai/main/doc/tutorials/getting_started/getting_started.html
+- 2. https://www.youtube.com/watch?v=c6Bxbq8UdaI
+
+7. 但是使用这个源码版本后遇到了launch error. 之前在iron版本也有这个问题, 我秒放弃了
+```bash{.line-numbers}
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): 'capabilities'
+```
+估计又是软件开发的bug
+- https://github.com/moveit/moveit2/issues/2734
+- https://github.com/moveit/moveit2/issues/2738#issuecomment-1998887288
+
+最终参考[这个](https://github.com/moveit/moveit2/issues/2734#issuecomment-2055368880)解决了:
+替换 `moveit2/moveit_configs_utils/moveit_configs_utils/launches.py` `line203`
+
+```python{.line-numbers}
+# origin
+default_value=moveit_config.move_group_capabilities["capabilities"],
+# replaced
+default_value=moveit_config.move_group_capabilities,
+```
