@@ -19,6 +19,8 @@ RUN apt-get update && \
 RUN apt install -y ros-$ROS_DISTRO-librealsense2* && \
     apt install -y ros-$ROS_DISTRO-realsense2-*
 
+# For correct configure QT library on the remote server
+RUN strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
 # Build moveit2 from source 
 # 1. https://moveit.picknik.ai/main/doc/tutorials/getting_started/getting_started.html
 # 2. https://www.youtube.com/watch?v=c6Bxbq8UdaI
