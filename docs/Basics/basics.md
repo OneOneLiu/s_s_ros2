@@ -114,3 +114,7 @@ data_files=[
 
 ## 如何launch
 https://docs.ros.org/en/rolling/Tutorials/Intermediate/Launch/Creating-Launch-Files.html
+
+如何添加launch文件
+- 如果是python就是在setup.py里面把launch 文件夹复制过去
+- 如果是c++就是在CMakeList.txt里面install, 每个文件夹都要用一个单独的install, 具体参考robot_gripper_control这个包.

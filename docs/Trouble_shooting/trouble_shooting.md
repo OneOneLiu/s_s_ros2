@@ -108,6 +108,10 @@ https://blog.csdn.net/raw_inputhello/article/details/136443432 这人也说从�
 - 1. https://moveit.picknik.ai/main/doc/tutorials/getting_started/getting_started.html
 - 2. https://www.youtube.com/watch?v=c6Bxbq8UdaI
 
+但是编译好之后还是不能用, 只有一个空壳, 能导入 `MoveItPy` 但是里面啥也没有. 看了一下构建所需的 `moveit2->moveit_core->CMakeLists.txt` 发现里面的python部分都被注释掉了.
+
+总的来说这是个待开发的功能, 不如直接使用C++. 所以我现在在用c++了
+
 7. 但是使用这个源码版本后遇到了launch error. 之前在iron版本也有这个问题, 我秒放弃了
 ```bash{.line-numbers}
 [ERROR] [launch]: Caught exception in launch (see debug for traceback): 'capabilities'
@@ -125,3 +129,8 @@ default_value=moveit_config.move_group_capabilities["capabilities"],
 # replaced
 default_value=moveit_config.move_group_capabilities,
 ```
+
+8. 启动moveit demo的时候警告:
+`[moveit_ros.robot_model_loader]: No kinematics plugins defined. Fill and load kinematics.yaml!`
+
+跟这个链接描述的完全一致: https://github.com/moveit/moveit2/issues/1702
