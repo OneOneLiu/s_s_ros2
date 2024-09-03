@@ -134,3 +134,11 @@ default_value=moveit_config.move_group_capabilities,
 `[moveit_ros.robot_model_loader]: No kinematics plugins defined. Fill and load kinematics.yaml!`
 
 跟这个链接描述的完全一致: https://github.com/moveit/moveit2/issues/1702
+
+9. launch 某个节点时警告说名字已经注册
+
+参考这个，不显式的命名即可。
+https://github.com/ros2/launch/issues/704#issuecomment-1536398500
+
+10. Bad_ptr错误
+原因不明，使用GPT解决了，后面再研究。参考[这个程序示例](files/bad_ptr.cpp)
